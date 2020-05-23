@@ -1,8 +1,10 @@
-﻿using System;
+﻿using PartyInvites.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace PartyInvites.Controllers
 {
@@ -17,6 +19,23 @@ namespace PartyInvites.Controllers
             ViewBag.Greeting = dt.Hour < 12 ? "早上好！" : "下午好！";
             return View();
         }
+
+        [HttpGet]
+        public ViewResult RsvpForm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ViewResult RsvpForm(GuestResponse guest)
+        {
+            if (ModelState.IsValid)
+            {
+                return View("Thanks", guest);
+            }
+            return View();
+        }
+
 
         //返回一个重定向结果
         public ActionResult Items()

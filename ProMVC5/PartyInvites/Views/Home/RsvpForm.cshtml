@@ -1,0 +1,62 @@
+﻿@model PartyInvites.Models.GuestResponse
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-theme.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/Content/Styles.css" />
+    <title>回复</title>
+</head>
+<body>
+    <div class="panel panel-success">
+        <div class="panel-heading text-center"><h4>RSVP</h4></div>
+        <div class="panel-body">
+            <!--这里的using不是清理资源，而是自动关闭元素-->
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary()
+                <div class="form-group">
+                    <label>姓名：</label>
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>邮箱：</label>
+                    @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>电话：</label>
+                    @Html.TextBoxFor(x => x.Phone, new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    <label>能否参加？</label>
+                    @Html.DropDownListFor(x => x.WillAttend, new[]
+                        {
+                            new SelectListItem()
+                            {
+                                Text="可以！",
+                                Value=bool.TrueString
+                            },
+                            new SelectListItem()
+                            {
+                                Text = "否！",
+                                Value = bool.FalseString
+                            }
+                        }, "请选择", new { @class = "form-control" })
+                </div>
+
+                <div class="text-center">
+                    <input class="btn btn-success" type="submit" value="提交" />
+                </div>
+
+            }
+        </div>
+    </div>
+</body>
+</html>
