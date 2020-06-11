@@ -11,7 +11,7 @@ namespace SportsStore.Web.Controllers
     public class ProductController : Controller
     {
         private IProductRepo repo;
-        public int PageSize { get; set; } = 4;
+        public int PageSize { get; set; } = 3;
         public ProductController(IProductRepo r)
         {
             repo = r;
@@ -29,7 +29,7 @@ namespace SportsStore.Web.Controllers
                 {
                     CurrentPage = page,
                     ItemsPerPage = PageSize,
-                    TotalItems = repo.Products.Count()
+                    TotalItems =  category==null? repo.Products.Count():repo.Products.Where(p=>p.Category == category).Count()
                 },
                 CurrentCategory = category
             };
