@@ -5,6 +5,7 @@ using SportsStore.Domain.Concrete;
 using SportsStore.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -42,6 +43,12 @@ namespace SportsStore.Web.Infrastructure
             //kernel.Bind<IProductRepo>().ToConstant(mock.Object);//每次请求存储库时返回的是同一个的对象，因此要用ToConstant
             //使用EF库代替模拟库
             kernel.Bind<IProductRepo>().To<EFProductRepo>();
+
+            EmailSettings emailSettings = new EmailSettings()
+            {
+                WriteAsFile = bool.Parse(ConfigurationManager.AppSettings["Email.WriteAsFile"] ?? "false")
+            };
+            kernel.Bind<IOrderProcessor>().To<EmailOrderProcessor>().WithConstructorArgument("settings", emailSettings);
         }
     }
 }

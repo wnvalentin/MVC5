@@ -12,48 +12,77 @@ namespace SportsStore.Web.Controllers
     public class CartController : Controller
     {
         private IProductRepo repository;
-
-        public CartController(IProductRepo repo)
+        private IOrderProcessor orderProcessor;
+        public CartController(IProductRepo repo, IOrderProcessor processor)
         {
             repository = repo;
+            orderProcessor = processor;
         }
 
-        public ViewResult Index(string returnUrl)
+        public ViewResult Index(Cart cart, string returnUrl)
         {
-            return View(new CartIndexViewModel { Cart = GetCart(), ReturnUrl = returnUrl });
+            return View(new CartIndexViewModel { Cart = cart, ReturnUrl = returnUrl });
         }
 
-        public RedirectToRouteResult AddToCart(int productId, string returnUrl)
-        {
-            Product product = repository.Products
-            .FirstOrDefault(p => p.ProductID == productId);
-            if (product != null)
-            {
-                GetCart().AddItem(product, 1);
-            }
-            return RedirectToAction("Index", new { returnUrl });
-        }
-
-        public RedirectToRouteResult RemoveFromCart(int productId, string returnUrl)
+        public RedirectToRouteResult AddToCart(Cart cart, int productId, string returnUrl)
         {
             Product product = repository.Products
             .FirstOrDefault(p => p.ProductID == productId);
             if (product != null)
             {
-                GetCart().RemoveLine(product);
+                cart.AddItem(product, 1);
             }
             return RedirectToAction("Index", new { returnUrl });
         }
 
-        private Cart GetCart()
+        public RedirectToRouteResult RemoveFromCart(Cart cart, int productId, string returnUrl)
         {
-            Cart cart = (Cart)Session["Cart"];
-            if (cart == null)
+            Product product = repository.Products
+            .FirstOrDefault(p => p.ProductID == productId);
+            if (product != null)
             {
-                cart = new Cart();
-                Session["Cart"] = cart;
+                cart.RemoveLine(product);
             }
-            return cart;
+            return RedirectToAction("Index", new { returnUrl });
+        }
+
+        public PartialViewResult Summary(Cart cart)
+        {
+            return PartialView(cart);
+        }
+
+        //被CartModelBinder代替了
+        //private Cart GetCart()
+        //{
+        //    Cart cart = (Cart)Session["Cart"];
+        //    if (cart == null)
+        //    {
+        //        cart = new Cart();
+        //        Session["Cart"] = cart;
+        //    }
+        //    return cart;
+        //}
+
+        public ViewResult Checkout()
+        {
+            return View(new ShippingDetails());
+        }
+
+        [HttpPost]
+        public ViewResult Checkout(Cart cart, ShippingDetails shippingDetails)
+        {
+            if (cart.Lines.Count() == 0)
+            {
+                ModelState.AddModelError("", "购物车是空的！");
+
+            }
+            if (ModelState.IsValid)
+            {
+                orderProcessor.ProcessOrder(cart, shippingDetails);
+                cart.Clear();
+                return View("Completed");
+            }
+            return View(shippingDetails);
         }
     }
 }
