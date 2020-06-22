@@ -10,5 +10,9 @@ namespace SportsStore.Domain.Abstraction
     public interface IProductRepo
     {
         IEnumerable<Product> Products { get; }
+
+        void SaveProduct(Product product);
+
+        Product DeleteProduct(int ProductID);
     }
 }
