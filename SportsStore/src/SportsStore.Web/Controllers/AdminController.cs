@@ -32,10 +32,17 @@ namespace SportsStore.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(Product product)
+        public ActionResult Edit(Product product, HttpPostedFileBase image=null)
         {
             if (ModelState.IsValid)
             {
+                if(image != null)
+                {
+                    product.ImageMimeType = image.ContentType;
+                    product.ImageData = new byte[image.ContentLength];
+                    //读取流：将数据从流传输到数据结构（如字节数组）中
+                    image.InputStream.Read(product.ImageData, 0, image.ContentLength);
+                }
                 repository.SaveProduct(product);
                 TempData["message"] = $"{product.Name}已经被保存！";
                 return RedirectToAction("Index");

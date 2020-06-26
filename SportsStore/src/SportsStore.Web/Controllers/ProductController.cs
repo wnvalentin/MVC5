@@ -1,4 +1,5 @@
 ﻿using SportsStore.Domain.Abstraction;
+using SportsStore.Domain.Entities;
 using SportsStore.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,16 @@ namespace SportsStore.Web.Controllers
                 CurrentCategory = category
             };
             return View(model);
+        }
+
+        public FileContentResult GetImage(int productId)
+        {
+            Product p = repo.Products.FirstOrDefault(a => a.ProductID == productId);
+            if (p != null)
+            {
+                return File(p.ImageData, p.ImageMimeType);
+            }
+            return null;
         }
     }
 }
