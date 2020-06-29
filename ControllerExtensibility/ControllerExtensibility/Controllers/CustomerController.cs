@@ -17,6 +17,9 @@ namespace ControllerExtensibility.Controllers
                 ActionName = "Index"
             });
         }
+
+        //方法名誉action名可以不一样。可以修改action名称
+        [ActionName("Enumerator")]
         public ViewResult List()
         {
             return View("Result", new Result
