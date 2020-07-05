@@ -6,6 +6,9 @@ using System.Web.Mvc;
 
 namespace WorkingWithRazor.Controllers
 {
+    /// <summary>
+    /// dfgh 
+    /// </summary>
     public class HomeController : Controller
     {
         // GET: Home
@@ -18,6 +21,12 @@ namespace WorkingWithRazor.Controllers
         public ActionResult List()
         {
             return View();
+        }
+
+        [ChildActionOnly]
+        public ActionResult Time()
+        {
+            return PartialView(DateTime.Now);
         }
     }
 }

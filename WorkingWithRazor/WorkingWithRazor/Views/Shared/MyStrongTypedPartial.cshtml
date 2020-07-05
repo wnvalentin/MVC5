@@ -1,0 +1,11 @@
+﻿@model IEnumerable<string>
+
+<div>
+    这是分部视图的内容。
+    <ul>
+        @foreach(var str in Model)
+        {
+            <li>@str</li>
+        }
+    </ul>
+</div>
