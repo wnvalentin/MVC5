@@ -1,10 +1,29 @@
 ﻿@model string[]
 @{
     ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-这是水果列表：
-@foreach(var name in Model)
-{
-    <span><b>@name</b></span>
+@section Header{
+    <div class="view" style="border:solid 1px">
+        @foreach (string str in new[] { "Home", "List", "Edit" })
+        {
+            @Html.ActionLink(str, str, null, new { style = "margin:5px" })
+        }
+    </div>
 }
+
+<div class="view" style="background-color:aquamarine">
+    这是水果列表：
+    @foreach (var name in Model)
+    {
+        <span><b>@name</b></span>
+    }
+</div>
+
+@*@section Footer{
+    <div class="view">
+        这是Footer。
+    </div>
+}*@
+
