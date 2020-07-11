@@ -133,6 +133,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
     <Content Include="Views\Home\CreatePerson.cshtml" />
     <Content Include="Views\Home\DisplaySummary.cshtml" />
+    <Content Include="Views\Home\Names.cshtml" />
+    <Content Include="Views\Home\Address.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
