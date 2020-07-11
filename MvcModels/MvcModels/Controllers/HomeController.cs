@@ -24,5 +24,21 @@ namespace MvcModels.Controllers
             return View(dataItem);
             
         }
+
+        public ActionResult CreatePerson()
+        {
+            return View(new Person());
+        }
+
+        [HttpPost]
+        public ActionResult CreatePerson(Person model)
+        {
+            return View("Index", model);
+        }
+
+        public ActionResult DisplaySummary([Bind(Prefix ="HomeAddress")]AddressSummary summary)
+        {
+            return View(summary);
+        }
     }
 }
