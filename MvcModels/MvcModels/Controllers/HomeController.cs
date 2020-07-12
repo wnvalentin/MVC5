@@ -53,5 +53,32 @@ namespace MvcModels.Controllers
             addresses = addresses ?? new List<AddressSummary>();
             return View(addresses);
         }
+
+        public ActionResult Address()
+        {
+            IList<AddressSummary> addresses = new List<AddressSummary>();
+            //采用标准的绑定过程来获取参数
+            UpdateModel(addresses);
+            //限定从表单数据中获取参数绑定模型
+            UpdateModel(addresses, new FormValueProvider(ControllerContext));
+
+            return View(addresses);
+        }
+
+        //限定从表单数据中获取参数绑定模型
+        public ActionResult Address(FormCollection formData)
+        {
+            IList<AddressSummary> addresses = new List<AddressSummary>();
+            try
+            {
+                UpdateModel(addresses, formData);
+            }
+            catch(InvalidOperationException ex)
+            {
+                //模型绑定失败会抛出invalidOperationException
+                //错误信息放在 ModelState 中
+            }
+            return View(addresses);
+        }
     }
 }

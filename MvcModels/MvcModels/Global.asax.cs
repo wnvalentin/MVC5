@@ -1,3 +1,5 @@
+using MvcModels.Infrastructure;
+using MvcModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,8 @@ namespace MvcModels
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            ValueProviderFactories.Factories.Insert(0, new CustomValueProviderFactory());
+            ModelBinders.Binders.Add(typeof(AddressSummary), new AddressSummaryBinder());
         }
     }
 }
